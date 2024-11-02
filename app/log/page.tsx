@@ -266,6 +266,16 @@ const RadioButton = () => {
                         <input type="checkbox" name="weather" value="Hot" />
                         Hot
                     </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" name="weather" value="Cold" />
+                        Cold
+                    </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" name="weather" value="Windy" />
+                        Windy
+                    </label>
                 </div>
 
                 <br />
