@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 interface FormData {
     date: string;
     mood: number | null;
+    sleep: number | null,
     comments: string;
     peopleSeen: string[];
     weather: string[];
@@ -19,10 +20,14 @@ const RadioButton = () => {
     const formRef = useRef<HTMLFormElement>(null);
     const dataStore: FormData[] = []; // Array to store submitted data
     const [mood, setMood] = useState<number | null>(null); // State for selected mood
+    const [sleep, setSleep] = useState<number | null>(null); // State for selected mood
     const router = useRouter(); 
 
     const handleMoodChange = (value: number) => {
         setMood(value);
+    };
+    const handleSleepChange = (value: number) => {
+        setSleep(value);
     };
 
     const handleSubmit = (event: React.FormEvent) => {
@@ -36,6 +41,7 @@ const RadioButton = () => {
             const entry: FormData = {
                 date: date,
                 mood: mood,
+                sleep: sleep,
                 comments: formData.get('comments')?.toString() || '',
                 peopleSeen: formData.getAll('people-seen').map(String),
                 weather: formData.getAll('weather').map(String),
@@ -87,8 +93,9 @@ const RadioButton = () => {
                     ))}
                 </div>
 
+                <br />
                 {/* emotion-description */}
-                <h3>What best describes your emotions?: </h3>
+                <h3>What best describes your emotions? </h3>
                 <div>
                     {mood && (
                         <div>
@@ -102,8 +109,9 @@ const RadioButton = () => {
                     )}
                 </div>
 
+                <br />
                 {/* impact */}
-                <h3>What impacted you the most today?: </h3>
+                <h3>What impacted you the most today? </h3>
                 <div>
                     <label>
                         <input type="checkbox" name="impact" value="Physical Health" />
@@ -130,6 +138,7 @@ const RadioButton = () => {
                         Hobbies
                     </label>
                     <br />
+                    <br />
                     <label>
                         <input type="checkbox" name="impact" value="Community" />
                         Community
@@ -149,6 +158,7 @@ const RadioButton = () => {
                         <input type="checkbox" name="impact" value="Partner/Dating" />
                         Partner/Dating
                     </label>
+                    <br />
                     <br />
                     <label>
                         <input type="checkbox" name="impact" value="Work" />
@@ -178,10 +188,28 @@ const RadioButton = () => {
                     <label>
                         <input type="checkbox" name="impact" value="Other" />
                         Other: 
-                        <input type="text" name="activities" placeholder="Enter More Locations" />
+                        <input type="text" name="activities" placeholder="Other" />
                     </label>
                 </div>
 
+                <br />
+                {/* sleep */}
+                <h3>Rate Your Sleep (1 to 5):</h3>
+                <div>
+                    {Array.from({ length: 5 }, (_, index) => (
+                        <label key={index + 1}>
+                            <input
+                                type="radio"
+                                name="sleep"
+                                value={index + 1} // Set value from 1 to 10
+                                onChange={() => handleSleepChange(index + 1)}
+                            />
+                            {index + 1} {/* Display the number */}
+                        </label>
+                    ))}
+                </div>
+                
+                <br />
                 {/* peopleSeen */}
                 <h3>Who did you see today?</h3>
                 <div>
@@ -202,6 +230,7 @@ const RadioButton = () => {
                     </label>
                 </div>
 
+                <br />
                 {/* weather */}
                 <h3>What was the weather like?</h3>
                 <div>
@@ -226,6 +255,7 @@ const RadioButton = () => {
                     </label>
                 </div>
 
+                <br />
                 {/* activities */}
                 <h3>What did you do today?</h3>
                 <div>
@@ -256,6 +286,7 @@ const RadioButton = () => {
                     </label>
                 </div>
 
+                <br />
                 {/* health */}
                 <h3>How is your health?</h3>
                 <div>
@@ -275,6 +306,7 @@ const RadioButton = () => {
                     </label>
                 </div>
 
+                <br />
                 {/* location */}
                 <h3>Where did you go today?</h3>
                 <div>
@@ -305,6 +337,7 @@ const RadioButton = () => {
                     </label>
                 </div>
 
+                <br />
                 {/* comments */}
                 <h3>Additional Comments: </h3>
                 <div>
@@ -318,8 +351,9 @@ const RadioButton = () => {
                     </textarea>
                 </div>
 
-
+                <br />
                 <button type="submit">Submit</button>
+                <br /><br />
             </div>
         </form>
 
