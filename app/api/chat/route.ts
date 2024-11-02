@@ -5,7 +5,7 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { Database } from '@/lib/db_types'
 
-import { auth } from '@/auth'
+
 import { nanoid } from '@/lib/utils'
 
 export const runtime = 'edge'
@@ -23,13 +23,7 @@ export async function POST(req: Request) {
   })
   const json = await req.json()
   const { messages, previewToken } = json
-  const userId = (await auth({ cookieStore }))?.user.id
 
-  if (!userId) {
-    return new Response('Unauthorized', {
-      status: 401
-    })
-  }
 
   if (previewToken) {
     configuration.apiKey = previewToken
@@ -51,7 +45,6 @@ export async function POST(req: Request) {
       const payload = {
         id,
         title,
-        userId,
         createdAt,
         path,
         messages: [
