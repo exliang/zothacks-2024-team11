@@ -1,7 +1,9 @@
 "use client"
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { getNotes } from '../actions';
+import { createClient } from '@supabase/supabase-js';
 
 interface FormData {
     date: string;
@@ -22,7 +24,18 @@ const RadioButton = () => {
     const [mood, setMood] = useState<number | null>(null); // State for selected mood
     const [sleep, setSleep] = useState<number | null>(null); // State for selected mood
     const router = useRouter(); 
+    const [datastuff, setDataStuff] = useState<any>(null)
+ 
 
+
+    useEffect(() => {
+        setDataStuff(getNotes())
+    },[])
+
+
+
+
+    console.log('datastuff', datastuff)
     const handleMoodChange = (value: number) => {
         setMood(value);
     };
@@ -54,8 +67,8 @@ const RadioButton = () => {
             dataStore.push(entry); // Store the form data
             console.log("Submitted Data:", entry); // Log to verify the data structure
 
-            router.push('/');
-            formRef.current.reset();
+            router.push('/'); // goes back to chat after submission
+            formRef.current.reset(); // resets options 
             setMood(null);
         }
     };

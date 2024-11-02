@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { Database } from '@/lib/db_types'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import {createClient} from '@supabase/supabase-js'
 
 import { type Chat } from '@/lib/types'
 
@@ -110,4 +111,24 @@ export async function shareChat(chat: Chat) {
     .throwOnError()
 
   return payload
+}
+
+
+export async function getNotes(){
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      auth: {
+
+        persistSession: false
+      }
+    }
+  )
+  const {data, error} = await supabase.from('dummy').select('*')
+  if (error) {
+    console.error('Error')
+  }
+  return data
+
 }
