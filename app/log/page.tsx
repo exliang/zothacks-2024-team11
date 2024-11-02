@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface FormData {
@@ -12,12 +12,18 @@ interface FormData {
     activities: string[];
     health: string[];
     location: string[];
+    emotionDescription: string[];
 }
 
 const RadioButton = () => {
     const formRef = useRef<HTMLFormElement>(null);
     const dataStore: FormData[] = []; // Array to store submitted data
+    const [mood, setMood] = useState<number | null>(null); // State for selected mood
     const router = useRouter(); 
+
+    const handleMoodChange = (value: number) => {
+        setMood(value);
+    };
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault(); // Prevent page reload on submit
@@ -29,28 +35,43 @@ const RadioButton = () => {
             // Build an object to store form data
             const entry: FormData = {
                 date: date,
-                mood: formData.get('mood') ? Number(formData.get('mood')) : null,
+                mood: mood,
                 comments: formData.get('comments')?.toString() || '',
                 peopleSeen: formData.getAll('people-seen').map(String),
                 weather: formData.getAll('weather').map(String),
-                activities: formData.getAll('activities').map(String),
+                activities: formData.getAll('activities').map(String).filter(activity => activity !== ''),
                 health: formData.getAll('health').map(String),
                 location: formData.getAll('location').map(String),
+                emotionDescription: formData.getAll('emotion-description').map(String),
             };
 
             dataStore.push(entry); // Store the form data
             console.log("Submitted Data:", entry); // Log to verify the data structure
 
-            router.push('/'); 
-
+            router.push('/');
             formRef.current.reset();
+            setMood(null);
         }
+    };
+
+    const getEmotionOptions = () => {
+        if (mood === null) return [];
+
+        if (mood >= 1 && mood <= 3) {
+            return ["Frustrated", "Sad", "Disappointed", "Anxious", "Angry", "Tired", "Lonely"];
+        } else if (mood >= 4 && mood <= 6) {
+            return ["Neutral", "Indifferent", "Content", "Confused", "Hopeful", "Bored"];
+        } else if (mood >= 7 && mood <= 10) {
+            return ["Happy", "Pleased", "Excited", "Ecstatic", "Grateful", "Overjoyed", "Amazing"];
+        }
+        return [];
     };
 
     return (
         <form ref={formRef} onSubmit={handleSubmit}>
             <div>
 
+                {/* mood */}
                 <h3>Rate Your Mood (1 to 10):</h3>
                 <div>
                     {Array.from({ length: 10 }, (_, index) => (
@@ -59,22 +80,44 @@ const RadioButton = () => {
                                 type="radio"
                                 name="mood"
                                 value={index + 1} // Set value from 1 to 10
+                                onChange={() => handleMoodChange(index + 1)}
                             />
                             {index + 1} {/* Display the number */}
                         </label>
                     ))}
                 </div>
 
+                {/* emotion-description */}
+                <h3>What best describes your emotions?: </h3>
+                <div>
+                    {mood && (
+                        <div>
+                            {getEmotionOptions().map((emotion, index) => (
+                                <label key={index}>
+                                    <input type="checkbox" name="emotion-description" value={emotion} />
+                                    {emotion}
+                                </label>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* impact */}
                 <h3>What impacted you the most today?: </h3>
                 <div>
                     <label>
-                        <input type="checkbox" name="impact" value="Health" />
-                        Health
+                        <input type="checkbox" name="impact" value="Physical Health" />
+                        Physical Health 
+                    </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" name="impact" value="Mental Health" />
+                        Mental Health 
                     </label>
                     <br />
                     <label>
                         <input type="checkbox" name="impact" value="Fitness" />
-                        fitness
+                        Fitness
                     </label>
                     <br />
                     <label>
@@ -139,19 +182,7 @@ const RadioButton = () => {
                     </label>
                 </div>
 
-                <h3>Additional Comments: </h3>
-                <div>
-                    <textarea
-                        id="comments"
-                        name="comments" // Include name attribute for form access
-                        placeholder="Enter your comments here..."
-                        rows = {5}
-                        cols = {33}
-                        >
-                    </textarea>
-                </div>
-
-
+                {/* peopleSeen */}
                 <h3>Who did you see today?</h3>
                 <div>
                     <label>
@@ -171,7 +202,7 @@ const RadioButton = () => {
                     </label>
                 </div>
 
-
+                {/* weather */}
                 <h3>What was the weather like?</h3>
                 <div>
                     <label>
@@ -195,7 +226,7 @@ const RadioButton = () => {
                     </label>
                 </div>
 
-
+                {/* activities */}
                 <h3>What did you do today?</h3>
                 <div>
                     <label>
@@ -225,8 +256,8 @@ const RadioButton = () => {
                     </label>
                 </div>
 
-
-                <h3>How are you feeling today?</h3>
+                {/* health */}
+                <h3>How is your health?</h3>
                 <div>
                     <label>
                         <input type="checkbox" name="health" value="Healthy" />
@@ -244,7 +275,7 @@ const RadioButton = () => {
                     </label>
                 </div>
 
-
+                {/* location */}
                 <h3>Where did you go today?</h3>
                 <div>
                     <label>
@@ -274,7 +305,20 @@ const RadioButton = () => {
                     </label>
                 </div>
 
-                <h3>Where did you go today?</h3>
+                {/* comments */}
+                <h3>Additional Comments: </h3>
+                <div>
+                    <textarea
+                        id="comments"
+                        name="comments" // Include name attribute for form access
+                        placeholder="Enter your comments here..."
+                        rows = {5}
+                        cols = {33}
+                        >
+                    </textarea>
+                </div>
+
+
                 <button type="submit">Submit</button>
             </div>
         </form>
