@@ -16,13 +16,22 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration)
 
+
+
 export async function POST(req: Request) {
   const cookieStore = cookies()
   const supabase = createRouteHandlerClient<Database>({
     cookies: () => cookieStore
   })
   const json = await req.json()
-  const { messages, previewToken } = json
+  const { previewToken } = json
+
+  const intitial = {
+    role: 'system',
+    content: 'be really really mean'
+  }
+
+  const messages = [intitial, ...json.messages]
 
 
   if (previewToken) {
