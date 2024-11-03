@@ -1,6 +1,6 @@
 
 import * as React from 'react'
-import pandaImg from './file.png';	
+import pandaImg from './drawingPanda.png';
 
 import { Button } from '@/components/ui/button'
 import {
@@ -26,20 +26,20 @@ export function Navbar() { //panda in corner, bamboo border?, forets theme: gree
 	height: '15vh',             // Full viewport height
 	textAlign: 'center',         // Center text inside the div
 	backgroundColor: '#63967c',
-	border: '2px solid #000',
-	borderRadius: '5px',
+
 	fontFamily: "'Patrick Hand', cursive"
   };
 
   return (
-    <div style={divStyle}> 
+    <div style={divStyle} className="border-b-2 border-black"> 
 		<img src={pandaImg.src} 
-			width={100}
-			height={100}
+			width={240}
 			style={{
 				float: 'left',
-				marginLeft: '50px'
+				marginLeft: '50px',
+				marginTop: '10px'
 		}}/>
+		<a style={{fontSize: '50px'}}> 🎋 </a>
 		<a href="http://localhost:3000/" style={{
 			marginLeft: 'auto',
 			marginRight: '40px',

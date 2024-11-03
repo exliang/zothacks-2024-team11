@@ -88,10 +88,10 @@ const RadioButton = () => {
 
     return (
         <form ref={formRef} onSubmit={handleSubmit}>
-            <div>
-
+            <div style={{ marginLeft: '50px' }}>
+                <h2 style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '24px', marginTop: '10px'}}> Your Daily Snapshot </h2>
                 {/* mood */}
-                <h3>Rate Your Mood (1 to 10):</h3>
+                <h3><b>1. Rate Your Mood (1 to 10):</b></h3>
                 <div>
                     {Array.from({ length: 10 }, (_, index) => (
                         <label key={index + 1}>
@@ -105,15 +105,17 @@ const RadioButton = () => {
                         </label>
                     ))}
                 </div>
+                
 
                 <br />
                 {/* emotion-description */}
-                <h3>What best describes your emotions? </h3>
+                <h3><b>2. What best describes your emotions?</b> </h3>
                 <div>
                     {mood && (
                         <div>
                             {getEmotionOptions().map((emotion, index) => (
-                                <label key={index}>
+                                <label key={index}
+                                style={{ display: "block"}} >
                                     <input type="checkbox" name="emotion-description" value={emotion} />
                                     {emotion}
                                 </label>
@@ -121,10 +123,10 @@ const RadioButton = () => {
                         </div>
                     )}
                 </div>
-
+{/* </div> */}
                 <br />
                 {/* impact */}
-                <h3>What impacted you the most today? </h3>
+                <h3><b> 3. What impacted you the most today?</b></h3>
                 <div>
                     <label>
                         <input type="checkbox" name="impact" value="Physical Health" />
@@ -204,11 +206,12 @@ const RadioButton = () => {
                         <input type="text" name="activities" placeholder="Other" />
                     </label>
                 </div>
+                
 
                 <br />
                 {/* sleep */}
-                <h3>Rate Your Sleep (1 to 5):</h3>
-                <div>
+                <h3><b>4. Rate Your Sleep (1 to 5)</b></h3>
+                <div style={{ display: "flex", justifyContent: "left", gap: "20px" }}>
                     {Array.from({ length: 5 }, (_, index) => (
                         <label key={index + 1}>
                             <input
@@ -224,8 +227,8 @@ const RadioButton = () => {
                 
                 <br />
                 {/* peopleSeen */}
-                <h3>Who did you see today?</h3>
-                <div>
+                <h3><b>5. Who did you see today?</b></h3>
+                <div style={{ display: "flex", justifyContent: "left", gap: "20px" }}>
                     <label>
                         <input type="checkbox" name="people-seen" value="Family" />
                         Family
@@ -245,7 +248,7 @@ const RadioButton = () => {
 
                 <br />
                 {/* weather */}
-                <h3>What was the weather like?</h3>
+                <h3><b>6. What was the weather like?</b></h3>
                 <div>
                     <label>
                         <input type="checkbox" name="weather" value="Sunny" />
@@ -280,7 +283,7 @@ const RadioButton = () => {
 
                 <br />
                 {/* activities */}
-                <h3>What did you do today?</h3>
+                <h3><b>7. What did you do today?</b></h3>
                 <div>
                     <label>
                         <input type="checkbox" name="activities" value="Exercised" />
@@ -311,7 +314,7 @@ const RadioButton = () => {
 
                 <br />
                 {/* health */}
-                <h3>How is your health?</h3>
+                <h3><b>8. How is your health? </b></h3>
                 <div>
                     <label>
                         <input type="checkbox" name="health" value="Healthy" />
@@ -331,7 +334,7 @@ const RadioButton = () => {
 
                 <br />
                 {/* location */}
-                <h3>Where did you go today?</h3>
+                <h3><b>9. Where did you go today?</b></h3>
                 <div>
                     <label>
                         <input type="checkbox" name="location" value="Home" />
@@ -362,7 +365,7 @@ const RadioButton = () => {
 
                 <br />
                 {/* comments */}
-                <h3>Additional Comments: </h3>
+                <h3><b>10. Additional Comments: </b></h3>
                 <div>
                     <textarea
                         id="comments"
@@ -375,12 +378,18 @@ const RadioButton = () => {
                 </div>
 
                 <br />
-                <button type="submit">Submit</button>
-                <br /><br />
+                <button type="submit" style={{
+                    border: '2px solid #FFFFFF', // Set the border width, style, and color
+                    padding: '10px 20px',       // Optional: Add padding for better appearance
+                    backgroundColor: '#A52A2A',  // Optional: Set background color
+                    color: '#FFFFFF',
+                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+                    boxShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)',
+                }}><b>Submit</b></button>
+                <br /><br /> 
             </div>
         </form>
-
     );
- };
+};
 
  export default RadioButton;
