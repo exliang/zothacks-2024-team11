@@ -11,6 +11,7 @@ export function FooterText({ className, ...props }: React.ComponentProps<'p'>) {
         className
       )}
       {...props}
+      style={{ color: '#FFFFFF' }}
     >
       Open source AI chatbot built with{' '}
       <ExternalLink href="https://nextjs.org">Next.js</ExternalLink> and{' '}
