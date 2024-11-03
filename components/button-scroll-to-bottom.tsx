@@ -28,7 +28,7 @@ export function ButtonScrollToBottom({ className, ...props }: ButtonProps) {
       {...props}
       style={{backgroundColor: "#BA0F30", color: " #ffffff"}}
     >
-      <IconArrowDown />
+      <span className="text-4xl">🎋</span> 
       <span className="sr-only">Scroll to bottom</span>
     </Button>
   )
