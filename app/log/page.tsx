@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { getNotes } from '../actions'
+import { getLog, getNotes } from '../actions'
 import { createClient } from '@supabase/supabase-js'
 import { createLog } from '../actions'
 
@@ -28,7 +28,7 @@ const RadioButton = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getNotes()
+      const data = await getLog()
       console.log('Component received data:', data)
       setDataStuff(data)
     }

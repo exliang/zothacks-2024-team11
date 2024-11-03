@@ -173,3 +173,14 @@ export async function createLog(entry: LogFormData) {
 
   return data
 }
+  
+export async function getLog(){
+  const cookieStore = cookies()
+    const supabase = createServerActionClient<Database>({
+      cookies: () => cookieStore
+    })
+  const { data, error } = await supabase
+  .from("logs").select("*")
+
+  return data
+}
