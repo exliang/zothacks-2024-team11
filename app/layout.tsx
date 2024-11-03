@@ -10,13 +10,13 @@ import { Providers } from '@/components/providers'
 
 export const metadata: Metadata = {
   title: {
-    default: 'Next.js AI Chatbot',
+    default: 'Your #1 Personal Supporter & Mood Analyzer',
     template: `%s - Next.js AI Chatbot`
   },
-  description: 'An AI-powered chatbot template built with Next.js and Vercel.',
+  description: 'A mood tracker helper ready to improve your quality of life!',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' }
+    { media: '(prefers-color-scheme: light)', color: 'cream' },
+    { media: '(prefers-color-scheme: dark)', color: 'green' }
   ],
   icons: {
     icon: '/favicon.ico',
