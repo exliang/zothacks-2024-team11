@@ -1,90 +1,113 @@
-"use client"
+'use client'
 
-import React, { useRef, useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { getNotes } from '../actions';
-import { createClient } from '@supabase/supabase-js';
+import React, { useRef, useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { getNotes } from '../actions'
+import { createClient } from '@supabase/supabase-js'
+import { createLog } from '../actions'
 
-interface FormData {
-    date: string;
-    mood: number | null;
-    sleep: number | null,
-    comments: string;
-    peopleSeen: string[];
-    weather: string[];
-    activities: string[];
-    health: string[];
-    location: string[];
-    emotionDescription: string[];
+interface LogFormData {
+  mood: number | null
+  sleep: number | null
+  comments: string
+  peopleSeen: string[]
+  weather: string[]
+  activities: string[]
+  health: string[]
+  location: string[]
+  emotionDescription: string[]
 }
 
 const RadioButton = () => {
-    const formRef = useRef<HTMLFormElement>(null);
-    const dataStore: FormData[] = []; // Array to store submitted data
-    const [mood, setMood] = useState<number | null>(null); // State for selected mood
-    const [sleep, setSleep] = useState<number | null>(null); // State for selected mood
-    const router = useRouter(); 
-    const [datastuff, setDataStuff] = useState<any>(null)
- 
+  const formRef = useRef<HTMLFormElement>(null)
+  const dataStore: LogFormData[] = [] // Array to store submitted data
+  const [mood, setMood] = useState<number | null>(null) // State for selected mood
+  const [sleep, setSleep] = useState<number | null>(null) // State for selected mood
+  const router = useRouter()
+  const [datastuff, setDataStuff] = useState<any>(null)
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getNotes()
+      console.log('Component received data:', data)
+      setDataStuff(data)
+    }
+    fetchData()
+  }, [])
 
-    useEffect(() => {
-        setDataStuff(getNotes())
-    },[])
+  console.log('Current datastuff state:', datastuff)
+  const handleMoodChange = (value: number) => {
+    setMood(value)
+  }
+  const handleSleepChange = (value: number) => {
+    setSleep(value)
+  }
 
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault() // Prevent page reload on submit
 
+    if (formRef.current) {
+      const formData = new FormData(formRef.current)
 
+      // Build an object to store form data
+      const entry: LogFormData = {
+        mood: mood,
+        sleep: sleep,
+        comments: formData.get('comments')?.toString() || '',
+        peopleSeen: formData.getAll('people-seen').map(String),
+        weather: formData.getAll('weather').map(String),
+        activities: formData.getAll('activities').map(String),
+        health: formData.getAll('health').map(String),
+        location: formData.getAll('location').map(String),
+        emotionDescription: formData.getAll('emotion-description').map(String)
+      }
 
-    console.log('datastuff', datastuff)
-    const handleMoodChange = (value: number) => {
-        setMood(value);
-    };
-    const handleSleepChange = (value: number) => {
-        setSleep(value);
-    };
+      await createLog(entry)
 
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault(); // Prevent page reload on submit
+      dataStore.push(entry) // Store the form data
+      console.log('Submitted Data:', entry) // Log to verify the data structure
 
-        if (formRef.current) {
-            const formData = new FormData(formRef.current);
-            const date = new Date().toISOString().split('T')[0]; // Get current date as YYYY-MM-DD
-
-            // Build an object to store form data
-            const entry: FormData = {
-                date: date,
-                mood: mood,
-                sleep: sleep,
-                comments: formData.get('comments')?.toString() || '',
-                peopleSeen: formData.getAll('people-seen').map(String),
-                weather: formData.getAll('weather').map(String),
-                activities: formData.getAll('activities').map(String).filter(activity => activity !== ''),
-                health: formData.getAll('health').map(String),
-                location: formData.getAll('location').map(String),
-                emotionDescription: formData.getAll('emotion-description').map(String),
-            };
-
-            dataStore.push(entry); // Store the form data
-            console.log("Submitted Data:", entry); // Log to verify the data structure
-
-            router.push('/'); // goes back to chat after submission
-            formRef.current.reset(); // resets options 
-            setMood(null);
-        }
-    };
+      router.push('/') // goes back to chat after submission
+      formRef.current.reset() // resets options
+      setMood(null)
+    }
+  }
 
     const getEmotionOptions = () => {
         if (mood === null) return [];
 
-        if (mood >= 1 && mood <= 3) {
-            return ["Frustrated", "Sad", "Disappointed", "Anxious", "Angry", "Tired", "Lonely"];
-        } else if (mood >= 4 && mood <= 6) {
-            return ["Neutral", "Indifferent", "Content", "Confused", "Hopeful", "Bored"];
-        } else if (mood >= 7 && mood <= 10) {
-            return ["Happy", "Pleased", "Excited", "Ecstatic", "Grateful", "Overjoyed", "Amazing"];
-        }
-        return [];
-    };
+    if (mood >= 1 && mood <= 3) {
+      return [
+        'Frustrated',
+        'Sad',
+        'Disappointed',
+        'Anxious',
+        'Angry',
+        'Tired',
+        'Lonely'
+      ]
+    } else if (mood >= 4 && mood <= 6) {
+      return [
+        'Neutral',
+        'Indifferent',
+        'Content',
+        'Confused',
+        'Hopeful',
+        'Bored'
+      ]
+    } else if (mood >= 7 && mood <= 10) {
+      return [
+        'Happy',
+        'Pleased',
+        'Excited',
+        'Ecstatic',
+        'Grateful',
+        'Overjoyed',
+        'Amazing'
+      ]
+    }
+    return []
+  }
 
     return (
         <form ref={formRef} onSubmit={handleSubmit}>

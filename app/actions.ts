@@ -5,7 +5,7 @@ import { cookies } from 'next/headers'
 import { Database } from '@/lib/db_types'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import {createClient} from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
 
 import { type Chat } from '@/lib/types'
 
@@ -113,22 +113,63 @@ export async function shareChat(chat: Chat) {
   return payload
 }
 
+export async function getNotes() {
+  try {
+    const cookieStore = cookies()
+    const supabase = createServerActionClient<Database>({
+      cookies: () => cookieStore
+    })
 
-export async function getNotes(){
+    const { data, error } = await supabase.from('dummy').select('*')
+
+    if (error) {
+      console.error('Error:', error)
+      return null
+    }
+
+    return data
+  } catch (error) {
+    console.error('Error:', error)
+    return null
+  }
+}
+
+interface LogFormData {
+  mood: number | null
+  sleep: number | null
+  comments: string
+  peopleSeen: string[]
+  weather: string[]
+  activities: string[]
+  health: string[]
+  location: string[]
+  emotionDescription: string[]
+}
+
+export async function createLog(entry: LogFormData) {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      auth: {
-
-        persistSession: false
-      }
-    }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
-  const {data, error} = await supabase.from('dummy').select('*')
-  if (error) {
-    console.error('Error')
-  }
-  return data
 
+  const { data, error } = await supabase
+    .from('logs') // make sure this table name matches your Supabase table
+    .insert({
+      mood: entry.mood,
+      sleep: entry.sleep,
+      comments: entry.comments,
+      peopleSeen: entry.peopleSeen,
+      weather: entry.weather,
+      activities: entry.activities,
+      health: entry.health,
+      location: entry.location,
+      emotionDescription: entry.emotionDescription
+    })
+
+  if (error) {
+    console.error('Error inserting data:', error)
+    throw error
+  }
+
+  return data
 }

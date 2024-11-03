@@ -39,7 +39,7 @@ export function Navbar() { //panda in corner, bamboo border?, forets theme: gree
 				marginLeft: '50px',
 				marginTop: '10px'
 		}}/>
-		<a style={{fontSize: '50px'}}> 🎋 </a>
+		{/* <a style={{fontSize: '50px'}}> 🌿 </a> */}
 		<a href="http://localhost:3000/" style={{
 			marginLeft: 'auto',
 			marginRight: '40px',

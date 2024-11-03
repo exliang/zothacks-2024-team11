@@ -73,16 +73,16 @@ export function PromptForm({
           spellCheck={false}
           className="min-h-[60px] w-full resize-none bg-transparent px-4 py-[1.3rem] focus-within:outline-none sm:text-sm"
         />
-        <div className="absolute right-0 top-4 sm:right-4" style={{backgroundColor: "#E3242B"}}>
-          <Tooltip>
+        <div className="absolute right-0 top-4 sm:right-4">
+          <Tooltip> 
             <TooltipTrigger asChild>
               <Button
                 type="submit"
                 size="icon"
                 disabled={isLoading || input === ''}
               >
-                <IconArrowElbow />
-                <span className="sr-only">Send message</span>
+                <span className="text-4xl">🎍</span>
+                <span className="sr-only bg-none">Send message</span>
               </Button>
             </TooltipTrigger>
             <TooltipContent>Send message</TooltipContent>
