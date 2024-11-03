@@ -1,6 +1,6 @@
 
 import * as React from 'react'
-import pandaImg from './panda.jpg';	
+import pandaImg from './file.png';	
 
 import { Button } from '@/components/ui/button'
 import {

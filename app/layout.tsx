@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png'
   }
 }
-  
+
 interface RootLayoutProps {
   children: React.ReactNode
 }
@@ -47,7 +47,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <div className="flex min-h-screen flex-col">
             {/* @ts-ignore */}
 
-            <main className="flex flex-1 flex-col bg-muted/50">{children}</main>
+            <main className="flex flex-1 flex-col" style={{ backgroundColor: '#e5f2c9'}}>{children} 
+            </main>
           </div>
           <TailwindIndicator />
         </Providers>
